@@ -63,6 +63,7 @@ fn show_pause_menu(mut commands: Commands) {
                 .with_children(|children| {
                     children.header("Game Paused");
                     children.button("Menu").observe(return_to_title_screen);
+                    children.button("Resume").observe(unpause_game);
                 });
         });
 }
@@ -75,4 +76,8 @@ fn hide_pause_menu(mut commands: Commands, pause_menu_query: Query<Entity, With<
 
 fn return_to_title_screen(_trigger: Trigger<OnPress>, mut next_screen: ResMut<NextState<Screen>>) {
     next_screen.set(Screen::Title);
+}
+
+fn unpause_game(_trigger: Trigger<OnPress>, mut next_state: ResMut<NextState<IsPaused>>) {
+    next_state.set(IsPaused::Running);
 }
