@@ -11,6 +11,7 @@ use bevy::{
     audio::{AudioPlugin, Volume},
     prelude::*,
 };
+use screens::IsPaused;
 
 pub struct AppPlugin;
 
@@ -19,7 +20,14 @@ impl Plugin for AppPlugin {
         // Order new `AppStep` variants by adding them here:
         app.configure_sets(
             Update,
-            (AppSet::TickTimers, AppSet::RecordInput, AppSet::Update).chain(),
+            (AppSet::TickTimers, AppSet::RecordInput, AppSet::Update)
+                .chain()
+                // This handles pausing the input and tick system sets when the game
+                // enters the [`IsPaused::Paused`] sub-state.
+                // Note that this only applies to the `Update` schedule. If you want
+                // to pause other systems in for instance `FixedUpdate`, the you need
+                // to add a call `configure_sets` with the run conditions there too.
+                .run_if(not(in_state(IsPaused::Paused))),
         );
 
         // Spawn the main camera.

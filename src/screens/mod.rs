@@ -2,9 +2,12 @@
 
 mod credits;
 mod loading;
+mod pause;
 mod playing;
 mod splash;
 mod title;
+
+pub use pause::IsPaused;
 
 use bevy::prelude::*;
 
@@ -15,6 +18,7 @@ pub(super) fn plugin(app: &mut App) {
     app.add_plugins((
         splash::plugin,
         loading::plugin,
+        pause::plugin,
         title::plugin,
         credits::plugin,
         playing::plugin,
