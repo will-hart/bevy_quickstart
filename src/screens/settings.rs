@@ -3,7 +3,6 @@
 //! same, but you could customise each menu.
 
 use bevy::prelude::*;
-use ui_palette::MENU_BACKGROUND_COLOR;
 
 use super::{
     pause::{IsPaused, PauseState},
@@ -34,27 +33,9 @@ fn spawn_settings_ui_elements(children: &mut ChildBuilder) {
 /// Shows the Settings Menu, which is wrapped in a node with a background colour.
 fn show_settings_menu(mut commands: Commands) {
     commands
-        .ui_root()
+        .menu_root()
         .insert(SettingsMenu)
-        .with_children(|children| {
-            children
-                .spawn((
-                    NodeBundle {
-                        style: Style {
-                            width: Val::Px(500.),
-                            height: Val::Px(300.),
-                            padding: UiRect::all(Val::Px(10.)),
-                            flex_direction: FlexDirection::Column,
-                            align_items: AlignItems::Center,
-                            ..default()
-                        },
-                        background_color: BackgroundColor(MENU_BACKGROUND_COLOR),
-                        ..default()
-                    },
-                    StateScoped(Screen::Settings),
-                ))
-                .with_children(spawn_settings_ui_elements);
-        });
+        .with_children(spawn_settings_ui_elements);
 }
 
 /// Shows the Settings Screen, which is not wrapped in another menu node.

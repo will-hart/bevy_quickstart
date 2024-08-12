@@ -118,6 +118,10 @@ pub trait Containers {
     /// Spawns a root node that covers the full screen
     /// and centers its content horizontally and vertically.
     fn ui_root(&mut self) -> EntityCommands;
+
+    /// Spawns a menu node that takes up part of the screen
+    /// and has a coloured background
+    fn menu_root(&mut self) -> EntityCommands;
 }
 
 impl Containers for Commands<'_, '_> {
@@ -135,6 +139,28 @@ impl Containers for Commands<'_, '_> {
                     position_type: PositionType::Absolute,
                     ..default()
                 },
+                ..default()
+            },
+        ))
+    }
+
+    fn menu_root(&mut self) -> EntityCommands {
+        self.spawn((
+            Name::new("Menu Root"),
+            NodeBundle {
+                style: Style {
+                    width: Percent(80.0),
+                    height: Percent(80.0),
+                    left: Val::Percent(10.),
+                    top: Val::Percent(10.),
+                    justify_content: JustifyContent::Center,
+                    align_items: AlignItems::Center,
+                    flex_direction: FlexDirection::Column,
+                    row_gap: Px(10.0),
+                    position_type: PositionType::Absolute,
+                    ..default()
+                },
+                background_color: BackgroundColor(MENU_BACKGROUND),
                 ..default()
             },
         ))

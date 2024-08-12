@@ -9,4 +9,4 @@ pub const HEADER_TEXT: Color = Color::srgb(0.867, 0.827, 0.412);
 
 pub const NODE_BACKGROUND: Color = Color::srgb(0.286, 0.478, 0.773);
 
-pub const MENU_BACKGROUND_COLOR: Color = Color::srgb(0.3, 0.3, 0.3);
+pub const MENU_BACKGROUND: Color = Color::srgb(0.3, 0.3, 0.3);
