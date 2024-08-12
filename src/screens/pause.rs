@@ -1,6 +1,7 @@
 //! Screens and states to handle pausing the game while in playing state.
 
 use bevy::{input::common_conditions::input_just_pressed, prelude::*};
+use ui_palette::MENU_BACKGROUND_COLOR;
 
 use super::Screen;
 use crate::theme::prelude::*;
@@ -19,9 +20,6 @@ pub(super) fn plugin(app: &mut App) {
 
     app.add_systems(OnEnter(PauseState::PauseMenu), spawn_pause_menu);
     app.add_systems(OnExit(PauseState::PauseMenu), despawn_pause_menus);
-
-    app.add_systems(OnEnter(PauseState::SettingsMenu), spawn_settings_menu);
-    app.add_systems(OnExit(PauseState::SettingsMenu), despawn_pause_menus);
 }
 
 #[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Hash, SubStates)]
@@ -63,8 +61,6 @@ fn toggle_pause(
     }
 }
 
-const PAUSE_MENU_BACKGROUND_COLOR: Color = Color::srgb(0.3, 0.3, 0.3);
-
 fn spawn_pause_menu(mut commands: Commands) {
     commands
         .ui_root()
@@ -80,13 +76,13 @@ fn spawn_pause_menu(mut commands: Commands) {
                         align_items: AlignItems::Center,
                         ..default()
                     },
-                    background_color: BackgroundColor(PAUSE_MENU_BACKGROUND_COLOR),
+                    background_color: BackgroundColor(MENU_BACKGROUND_COLOR),
                     ..default()
                 })
                 .with_children(|children| {
                     children.header("Game Paused");
-                    children.button("Settings").observe(trigger_settings_menu);
                     children.button("Resume").observe(trigger_unpause_game);
+                    children.button("Settings").observe(trigger_settings_menu);
                     children.button("Exit").observe(trigger_return_to_title);
                 });
         });
@@ -96,31 +92,6 @@ fn despawn_pause_menus(mut commands: Commands, pause_menu_query: Query<Entity, W
     for menu in &pause_menu_query {
         commands.entity(menu).despawn_recursive();
     }
-}
-
-fn spawn_settings_menu(mut commands: Commands) {
-    commands
-        .ui_root()
-        .insert(PauseMenu)
-        .with_children(|children| {
-            children
-                .spawn(NodeBundle {
-                    style: Style {
-                        width: Val::Px(500.),
-                        height: Val::Px(300.),
-                        padding: UiRect::all(Val::Px(10.)),
-                        flex_direction: FlexDirection::Column,
-                        align_items: AlignItems::Center,
-                        ..default()
-                    },
-                    background_color: BackgroundColor(PAUSE_MENU_BACKGROUND_COLOR),
-                    ..default()
-                })
-                .with_children(|children| {
-                    children.header("Settings");
-                    children.button("Back").observe(trigger_pause_menu);
-                });
-        });
 }
 
 fn trigger_return_to_title(_trigger: Trigger<OnPress>, mut next_screen: ResMut<NextState<Screen>>) {
@@ -139,8 +110,4 @@ fn trigger_settings_menu(
     mut next_state: ResMut<NextState<PauseState>>,
 ) {
     next_state.set(PauseState::SettingsMenu);
-}
-
-fn trigger_pause_menu(_trigger: Trigger<OnPress>, mut next_state: ResMut<NextState<PauseState>>) {
-    next_state.set(PauseState::PauseMenu);
 }

@@ -15,6 +15,7 @@ fn show_title_screen(mut commands: Commands) {
         .insert(StateScoped(Screen::Title))
         .with_children(|children| {
             children.button("Play").observe(enter_playing);
+            children.button("Settings").observe(enter_settings);
             children.button("Credits").observe(enter_credits);
 
             #[cfg(not(target_family = "wasm"))]
@@ -28,6 +29,10 @@ fn enter_playing(_trigger: Trigger<OnPress>, mut next_screen: ResMut<NextState<S
 
 fn enter_credits(_trigger: Trigger<OnPress>, mut next_screen: ResMut<NextState<Screen>>) {
     next_screen.set(Screen::Credits);
+}
+
+fn enter_settings(_trigger: Trigger<OnPress>, mut next_screen: ResMut<NextState<Screen>>) {
+    next_screen.set(Screen::Settings);
 }
 
 #[cfg(not(target_family = "wasm"))]

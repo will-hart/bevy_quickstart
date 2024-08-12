@@ -4,6 +4,7 @@ mod credits;
 mod loading;
 mod pause;
 mod playing;
+mod settings;
 mod splash;
 mod title;
 
@@ -20,6 +21,7 @@ pub(super) fn plugin(app: &mut App) {
         loading::plugin,
         pause::plugin,
         title::plugin,
+        settings::plugin,
         credits::plugin,
         playing::plugin,
     ));
@@ -32,6 +34,7 @@ pub enum Screen {
     Splash,
     Loading,
     Title,
+    Settings,
     Credits,
     Playing,
 }
